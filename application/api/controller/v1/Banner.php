@@ -19,10 +19,8 @@ class Banner
       public  function getBanner($id)
       {
           (new IDMustBePostiveint())->goCheck();
-            $banner = BannerModel::get($id);      //静态调用
-//          $banner = new BannerModel();   //实例化调用
-//          $banner = $banner->get($id);
-     //     $banner = BannerModel::getBannerByID($id);
+          $banner = BannerModel::getBannerByID($id);
+
           if(!$banner){
              throw new BannerMissException();
             //  throw new Exception('内部错误');
