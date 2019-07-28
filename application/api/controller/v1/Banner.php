@@ -6,7 +6,7 @@ use app\api\validate\IDMustBePostiveint;
 use app\api\model\Banner as BannerModel;
 use app\lib\exception\BannerMissException;
 use think\Exception;
-
+use app\api\validate\BaseValidate;
 class Banner
 {
     /*
