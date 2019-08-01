@@ -14,8 +14,9 @@ class Product extends BaseModel
         }
 
         public static function getMostRecent($count){
-
-
-
+            $products = self::limit($count)         //limit指定数量
+               ->order('create_time desc')      //order排序create_time排序的依据字段desc降序排列
+               ->select();
+            return $products;
         }
 }
