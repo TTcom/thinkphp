@@ -5,6 +5,7 @@ namespace app\api\controller\v1;
 
 use app\api\model\Product as ProductModel;
 use app\api\validate\Count;
+use app\api\validate\IDMustBePostiveint;
 use app\lib\exception\ProductException;
 
 class Product
@@ -19,7 +20,15 @@ class Product
        // $collection = collection($products);       //collection数据集
         $products = $products->hidden(['summary']);
         return $products;
+    }
+    public function getAllInCategory($id){
 
+         (new IDMustBePostiveint())->goCheck();
+         $products = ProductModel::getProductsByCategoryID($id);
+         if($products->isEmpty()){
+            throw new ProductException();
+         }
 
+         return $products;
     }
 }
