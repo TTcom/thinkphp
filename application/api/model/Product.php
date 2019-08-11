@@ -19,12 +19,23 @@ class Product extends BaseModel
                ->select();
             return $products;
         }
-
+        public function imgs(){     //商品详情图->一对多的关系
+            return  $this->hasMany('ProductImage','product_id','id');
+        }
+        public function properties(){     //商品的参数->一对多的关系
+            return $this->hasMany('ProductProperty','product_id','id');
+        }
         public static function getProductsByCategoryID($categoryID){
             $product = self::where('category_id','=',$categoryID)
                 ->select();
             return $product;
         }
 
+        public static function getProductDetail($id){
+            $products = self::with('imgs,properties')
+                ->find($id);
+            return $products;
+
+        }
 
 }
