@@ -38,7 +38,7 @@ class Product
         if(!$product){
             throw new ProductException();
         }else{
-            return$product;
+            return $product;
         }
 
     }
