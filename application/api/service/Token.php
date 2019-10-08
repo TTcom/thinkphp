@@ -4,6 +4,10 @@
 namespace app\api\service;
 
 
+use app\lib\exception\TokenException;
+use think\Exception;
+use think\Request;
+use think\Cache;
 class Token        //UserToken的基类
 {
        public static function generateToken(){
@@ -15,5 +19,29 @@ class Token        //UserToken的基类
            //salt盐
            $salt = config('secure.token_salt');
            return md5($randChars . $timestamp . $salt);
+       }
+       public static function getCurrentTokenVar($key){    //获取缓存
+              $token = Request::instance()   //从http头来拿token
+                  ->header('token');
+              $vars = Cache::get($token);
+              if(!$vars){
+                  throw new TokenException();
+              }else{
+                  if(!is_array($vars)){
+                      $vars = json_decode($vars,true);
+                  }
+                  if(array_key_exists($key,$vars)){  //如果数组中存在$key
+                      return $vars[$key];
+                  }else{
+                      throw  new Exception('尝试获取的Token变量并不存在');
+                  }
+
+              }
+
+       }
+       public  static function  getCurrentUid(){      //获取uid
+           //token
+          $uid = self::getCurrentTokenVar('uid');
+          return $uid;
        }
 }
