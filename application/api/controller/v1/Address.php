@@ -23,15 +23,8 @@ class Address extends Controller
         'checkPrimaryScope'=>['only'=>'createOrUpdateAddress']
     ];
     protected function checkPrimaryScope(){
-        $scope = TokenService::getCurrentTokenVar('scope');
-        if(!$scope){
-            throw new TokenException();
-        }
-        if($scope >= ScopeEnum::User){
-            return true;
-        }else{
-            throw new ForbiddenException();
-        }
+        TokenService::needPrimaryScope();
+
     }
 //
 //    private function  first(){

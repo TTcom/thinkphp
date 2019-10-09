@@ -4,7 +4,9 @@
 namespace app\api\service;
 
 
+use app\lib\exception\ForbiddenException;
 use app\lib\exception\TokenException;
+use app\lib\enum\ScopeEnum;
 use think\Exception;
 use think\Request;
 use think\Cache;
@@ -44,4 +46,20 @@ class Token        //UserToken的基类
           $uid = self::getCurrentTokenVar('uid');
           return $uid;
        }
+
+       public static function needPrimaryScope(){
+
+           $scope = self::getCurrentTokenVar('scope');
+           if(!$scope){
+               throw new TokenException();
+           }
+           if($scope >= ScopeEnum::User){
+               return true;
+           }else{
+               throw new ForbiddenException();
+           }
+       }
+
+
+
 }
