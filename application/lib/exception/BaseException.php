@@ -5,7 +5,7 @@ namespace app\lib\exception;
 
 
 use think\Exception;
-use Throwable;
+
 
 class BaseException extends Exception
 {

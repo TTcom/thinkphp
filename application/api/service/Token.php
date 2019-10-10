@@ -46,7 +46,7 @@ class Token        //UserToken的基类
           $uid = self::getCurrentTokenVar('uid');
           return $uid;
        }
-
+       // address引用 权限设置
        public static function needPrimaryScope(){
 
            $scope = self::getCurrentTokenVar('scope');
@@ -59,7 +59,18 @@ class Token        //UserToken的基类
                throw new ForbiddenException();
            }
        }
-
+      // order引用 权限设置
+       public static function needExclusiveScope(){
+           $scope = self::getCurrentTokenVar('scope');
+           if(!$scope){
+               throw new TokenException();
+           }
+           if($scope == ScopeEnum::User){
+               return true;
+           }else{
+               throw new ForbiddenException();
+           }
+       }
 
 
 }

@@ -7,25 +7,24 @@ namespace app\api\controller\v1;
 use app\api\model\User as UserModel;
 use app\api\validate\AddressNew;
 use app\api\service\Token as TokenService;
-use app\lib\exception\ForbiddenException;
+
 use app\lib\exception\SuccessMessage;
-use app\lib\exception\TokenException;
+
 use app\lib\exception\userException;
-use app\lib\enum\ScopeEnum;
-use think\Controller;
-use think\Exception;
+
+use app\api\controller\BaseController;
 
 
-class Address extends Controller
+class Address extends BaseController
 {
 
     protected $beforeActionList = [
         'checkPrimaryScope'=>['only'=>'createOrUpdateAddress']
     ];
-    protected function checkPrimaryScope(){
-        TokenService::needPrimaryScope();
-
-    }
+//    protected function checkPrimaryScope(){
+//        TokenService::needPrimaryScope();
+//
+//    }
 //
 //    private function  first(){
 //        echo 'first';
