@@ -23,6 +23,12 @@ class Order
         $this->oProducts = $oProducts;
         $this->products = $this->getProductsByOrder($oProducts);
         $this->uid = $uid;
+        $status = $this->getOrderStatus();
+        if(!$status['pass']){
+            $status['order_id'] = -1;
+            return $status;
+        }
+        //开始创建订单
 
     }
     private function getOrderStatus(){     //对比商品信息
@@ -32,8 +38,17 @@ class Order
             'pStatusArray'=>[],   //详细地商品信息
         ];
         foreach ($this->oProducts as $oProduct){
-
+             $pStatus = $this->getProductStatus(
+                 $oProduct['product_id'],$oProduct['count'],
+                 $this->products
+             );
+             if(!$pStatus['haveStock']){
+                 $status['pass'] = false;
+             }
+             $status['orderPrice']+= $pStatus['totalPrice'];
+             array_push($status['pStatusArray'],$pStatus);
         }
+        return $status;
 
 
     }
@@ -60,8 +75,13 @@ class Order
               $product = $products[$pIndex];
               $pStatus['id'] = $product['id'];
               $pStatus['count'] = $oCount;
+              $pStatus['totalPrice'] = $product['price'] * $oCount;
+              if($product['stock'] - $oCount >=0){
+                  $pStatus['haveStock'] = true;
+              }
         }
 
+        return $pStatus;
 
     }
 
