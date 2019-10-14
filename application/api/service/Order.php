@@ -6,8 +6,10 @@ namespace app\api\service;
 
 use app\api\model\OrderProduct;
 use app\api\model\Product;
+use app\api\model\UserAddress;
 use app\lib\exception\OrderException;
 use app\lib\exception\userException;
+use think\Db;
 use think\Exception;
 
 class Order
@@ -33,13 +35,16 @@ class Order
         }
         //开始创建订单
         $orderSnap = $this->snapOrder($status);
-        $order = $this->createOrder($orderSnap);
+
+        $order = self::createOrder($orderSnap);
+
         $order['pass'] = true;
         return $order;
 
     }
 
     private  function  createOrder($snap){  //生成订单数据
+        Db::startTrans(); //开始创建事务
         try{
         $orderNo = $this->makeOrderNo($snap);  //生成订单号
         $order = new \app\api\model\Order();
@@ -60,6 +65,7 @@ class Order
         }
         $orderProduct = new OrderProduct();
         $orderProduct->saveAll($this->oProducts);
+        Db::commit();  //事务结束
         return [
             'order_no' => $orderNo,
             'order_id' => $orderID,
@@ -67,6 +73,7 @@ class Order
         ];
          }
          catch (Exception $ex){
+            Db::rollback(); //事务撤销
              throw $ex;
          }
     }
@@ -100,9 +107,11 @@ class Order
         if(count($this->products)>1){
             $snap['snapName'] .= '等';
         }
+        return  $snap;
 
     }
     private function  getUserAddress(){
+
         $userAddress = UserAddress::where('user_id','=',$this->uid)
             ->find();
         if(!$userAddress){
