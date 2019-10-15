@@ -71,6 +71,16 @@ class Token        //UserToken的基类
                throw new ForbiddenException();
            }
        }
+       public static function isValidOperate($checkedUID){   //检测操作是否合法
 
+           if(!$checkedUID){
+               throw new Exception('检查UID时必须转入被检查的UID');
+           }
+           $currentOperateUID = self::getCurrentUid();
+           if($currentOperateUID == $checkedUID){
+               return true;
+           }
+           return false;
+       }
 
 }

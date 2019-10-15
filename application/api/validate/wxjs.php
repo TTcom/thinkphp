@@ -50,6 +50,39 @@ class wxjs
 //
 //     })
 // },
+//getPreOrder:function(token,orderID){
+//    if(token){
+//        wx.request({
+//      url: baseUrl + '/pay/pre_order?XDEBUG_SESSION_START=13093',
+//      method:'POST',
+//      header:{
+//            token:token
+//      },
+//      data:{
+//            id:orderID
+//      },
+//      success:function(res){
+//            var preData = res.data;
+//            console.log(preData);
+//            wx.requestPayment({  //小程序端的微信支付
+//          timeStamp: preData.timeStamp.toString(),
+//          nonceStr: preData.nonceStr,
+//          package: preData.package,
+//          signType: preData.signType,
+//          paySign: preData.paySign,
+//          success:function(){
+//                console.log(res.data);
+//            },
+//          fail:function(error){
+//                console.log(error);
+//            }
+//        })
+//      }
+//    })
+//  }
+//
+//
+//},
 // pay:function(){
 //    var token = wx.getStorageSync('token');
 //    var that = this;
@@ -60,19 +93,19 @@ class wxjs
 //       },
 //       data:{
 //        products:[
-//           {product_id:1,count:2},
 //           {product_id:2, count:3}
 //         ]
 //       },
 //       method:'POST',
 //       success: function (res) {
 //        console.log(res.data);
-//        //  if(res.data.pass){
-//        //    wx.setStorageSync('order_id',res.data.order_id);
+//        if(res.data.pass){
+//            wx.setStorageSync('order_id',res.data.order_id);
+//            that.getPreOrder(token,res.data.order_id);
 //
-//        //  }else{
-//        //    console.log('订单创建失败');
-//        //  }
+//        }else{
+//            console.log('订单创建失败');
+//        }
 //    },
 //       fail: function (res) {
 //        console.log(res.data);
@@ -88,7 +121,7 @@ class wxjs
 //        var code = res.code;
 //        console.log('code',code);
 //        wx.request({
-//         url: baseUrl +'/token/user?XDEBUG_SESSION_START=15940',
+//         url: baseUrl +'/token/user?XDEBUG_SESSION_START=13093',
 //         data: {
 //            code: code
 //         },
