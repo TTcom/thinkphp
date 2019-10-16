@@ -55,7 +55,7 @@ class Pay
        $wxOrderData->SetTotal_fee($totalPrice*100); //总金额
        $wxOrderData->SetBody('商贩');
        $wxOrderData->SetOpenid($openid);
-       $wxOrderData->SetNotify_url('http://qq.com');
+       $wxOrderData->SetNotify_url(config('secure.pay_back_url'));
        return $this->getPaySignature($wxOrderData);
    }
    private function getPaySignature($wxOrderData){
