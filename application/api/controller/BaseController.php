@@ -7,6 +7,7 @@ use think\Controller;
 
 class BaseController extends Controller
 {
+
     protected function checkPrimaryScope(){
         TokenService::needPrimaryScope();
     }
